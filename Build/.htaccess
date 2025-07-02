@@ -1,0 +1,16 @@
+# Serve Gzip compressed files
+AddEncoding gzip .gz
+AddType application/javascript .gz
+AddType application/octet-stream .gz
+AddType application/wasm .gz
+
+# Force specific files to be served with correct content type
+AddType application/javascript .js
+AddType application/octet-stream .data
+AddType application/wasm .wasm
+
+# If a compressed version exists, serve it instead
+RewriteEngine On
+RewriteCond %{HTTP:Accept-Encoding} gzip
+RewriteCond %{REQUEST_FILENAME}.gz -f
+RewriteRule ^(.*)$ $1.gz [QSA,L]
